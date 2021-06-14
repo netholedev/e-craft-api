@@ -40,7 +40,6 @@ export abstract class PublicBaseService<T> implements IPublicGenericService<T> {
   }
 
   async find(user: ICurrentUser, options?: FindManyOptions<T> | FindConditions<T>): Promise<T[]> {
-    console.log(this.injectSubCompanies(user, options));
     return this._repository.find(this.injectSubCompanies(user, options));
   }
 

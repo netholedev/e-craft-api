@@ -11,7 +11,7 @@ import { TransformInterceptor } from '@lib/base/interceptors';
 
 import { AccountsModule } from './accounts';
 import { CatalogsModule } from './catalogs';
-import { PusherModule } from './shared/pusher/pusher.module';
+import { UploadModule } from './upload';
 
 @Module({
   imports: [
@@ -41,7 +41,7 @@ import { PusherModule } from './shared/pusher/pusher.module';
     }),
     AccountsModule,
     CatalogsModule,
-    PusherModule,
+    UploadModule,
   ],
   providers: [
     {

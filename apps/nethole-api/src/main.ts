@@ -1,9 +1,13 @@
+import { contentParser } from 'fastify-multer';
+import helmet from 'fastify-helmet';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { PermissionsPrivateService } from '@lib/services';
 
 import { NetholeApiModule } from './nethole-api.module';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,9 +18,33 @@ async function bootstrap() {
     }),
   );
 
+  const swaggerDocument = new DocumentBuilder()
+    .setTitle('API')
+    .setDescription('API')
+    .setVersion('1.0')
+    .addTag('API')
+    .build();
+
+  app.register(contentParser);
+
+  app.register(helmet, {
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: [`'self'`],
+        styleSrc: [`'self'`, `'unsafe-inline'`],
+        imgSrc: [`'self'`, 'data:', 'validator.swagger.io'],
+        scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+      },
+    },
+  });
+
   app.enableCors({
     origin: '*',
   });
+
+  app.useStaticAssets({ root: 'uploads' });
+
+  SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, swaggerDocument));
 
   const permissionsPrivateService = app.get(PermissionsPrivateService);
 

@@ -4,7 +4,11 @@
   "monorepo": true,
   "root": "apps/nethole-api",
   "compilerOptions": {
-    "tsConfigPath": "apps/nethole-api/tsconfig.app.json"
+    "tsConfigPath": "apps/nethole-api/tsconfig.app.json",
+    "assets": [
+      "templates/**/*"
+    ],
+    "watchAssets": true
   },
   "projects": {
     "nethole-api": {

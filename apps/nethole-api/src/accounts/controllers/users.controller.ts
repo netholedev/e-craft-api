@@ -16,8 +16,7 @@ export class UsersController {
   find(
     @Query() query: QueryFilter<UserEntity>,
     @CurrentUser() user: ICurrentUser,
-    @Pagination() pagination: any,
-    @Filter() filter: any,
+    @Pagination() pagination: any, // TODO: interface
   ) {
     return this.usersPublicService.find(user, query);
   }
