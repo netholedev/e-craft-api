@@ -1,0 +1,29 @@
+{
+  "redis": {
+    "host": "c4t6.com",
+    "port": 6379,
+    "ttl": 5000
+  },
+  "postgres": {
+    "type": "postgres",
+    "host": "c4t6.com",
+    "port": 5431,
+    "username": "postgres",
+    "password": "postgres",
+    "database": "postgres",
+    "entities": [
+      "dist/apps/nethole-api/libs/entities/src/**/*.entity{.ts,.js}"
+    ],
+    "synchronize": true
+  },
+  "mongodb": {
+    "host": "c4t6.com",
+    "port": "27017",
+    "authSource": "admin",
+    "dbName": "nethole"
+  },
+  "jwt": {
+    "secret": "SLAYER",
+    "expire": "60m"
+  }
+}

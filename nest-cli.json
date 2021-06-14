@@ -1,0 +1,44 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/nethole-api/src",
+  "monorepo": true,
+  "root": "apps/nethole-api",
+  "compilerOptions": {
+    "tsConfigPath": "apps/nethole-api/tsconfig.app.json"
+  },
+  "projects": {
+    "nethole-api": {
+      "type": "application",
+      "root": "apps/nethole-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/nethole-api/src"
+    },
+    "entities": {
+      "type": "library",
+      "root": "libs/entities",
+      "entryFile": "index",
+      "sourceRoot": "libs/entities/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/entities/tsconfig.lib.json"
+      }
+    },
+    "services": {
+      "type": "library",
+      "root": "libs/services",
+      "entryFile": "index",
+      "sourceRoot": "libs/services/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/services/tsconfig.lib.json"
+      }
+    },
+    "base": {
+      "type": "library",
+      "root": "libs/base",
+      "entryFile": "index",
+      "sourceRoot": "libs/base/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/base/tsconfig.lib.json"
+      }
+    }
+  }
+}

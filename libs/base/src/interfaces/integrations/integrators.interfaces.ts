@@ -1,0 +1,3 @@
+export enum SUPPORTED_INTEGRATORS {
+  EODDS = 'EODDS',
+}

@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "webpack": true,
+    "webpackConfigPath": "webpack.config.js",
+    "tsConfigPath": "apps/nethole-api/tsconfig.app.json"
+  }
+}
