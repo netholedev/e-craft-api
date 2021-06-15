@@ -7,7 +7,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { PermissionsPrivateService } from '@lib/services';
 
 import { NetholeApiModule } from './nethole-api.module';
-import { join } from 'path';
+
+const swaggerDocument = new DocumentBuilder()
+  .setTitle('API')
+  .setDescription('API')
+  .setVersion('1.0')
+  .addTag('API')
+  .build();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -17,13 +23,6 @@ async function bootstrap() {
       trustProxy: true,
     }),
   );
-
-  const swaggerDocument = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('API')
-    .setVersion('1.0')
-    .addTag('API')
-    .build();
 
   app.register(contentParser);
 

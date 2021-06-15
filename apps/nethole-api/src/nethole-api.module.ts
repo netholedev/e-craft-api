@@ -11,7 +11,7 @@ import { TransformInterceptor } from '@lib/base/interceptors';
 
 import { AccountsModule } from './accounts';
 import { CatalogsModule } from './catalogs';
-import { UploadModule } from './upload';
+import { UploadModule } from './shared';
 
 @Module({
   imports: [

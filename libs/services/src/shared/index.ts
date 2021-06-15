@@ -4,3 +4,4 @@ export * from './pusher';
 export * from './email';
 export * from './file';
 export * from './excel';
+export * from './upload';

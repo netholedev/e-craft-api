@@ -1,3 +1,3 @@
 export * from './transform.interceptor';
-export * from './fastify-single-file.interceptor';
-export * from './fastify-multiple-files.interceptor';
+export * from './fastify-file.interceptor';
+export * from './fastify-files.interceptor';
