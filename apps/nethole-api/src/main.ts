@@ -7,6 +7,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { PermissionsPrivateService } from '@lib/services';
 
 import { NetholeApiModule } from './nethole-api.module';
+import { join } from 'path';
 
 const swaggerDocument = new DocumentBuilder()
   .setTitle('API')
@@ -26,22 +27,11 @@ async function bootstrap() {
 
   app.register(contentParser);
 
-  app.register(helmet, {
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: [`'self'`],
-        styleSrc: [`'self'`, `'unsafe-inline'`],
-        imgSrc: [`'self'`, 'data:', 'validator.swagger.io'],
-        scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
-      },
-    },
-  });
-
   app.enableCors({
     origin: '*',
   });
 
-  app.useStaticAssets({ root: 'uploads' });
+  app.useStaticAssets({ root: join(process.cwd(), 'uploads') });
 
   SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, swaggerDocument));
 
@@ -59,7 +49,9 @@ async function bootstrap() {
       }
     });
 
-  await app.listen(5000, '0.0.0.0', () => console.log('Nethole Api 🚀'));
+  await app.listen(8000, '0.0.0.0');
 }
 
-bootstrap();
+bootstrap()
+  .then(() => console.log('Nethole Api 🚀'))
+  .catch((err) => console.log(err));
