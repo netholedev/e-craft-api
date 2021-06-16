@@ -2,7 +2,7 @@ import { contentParser } from 'fastify-multer';
 import helmet from 'fastify-helmet';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
 
 import { PermissionsPrivateService } from '@lib/services';
 
@@ -10,10 +10,10 @@ import { NetholeApiModule } from './nethole-api.module';
 import { join } from 'path';
 
 const swaggerDocument = new DocumentBuilder()
-  .setTitle('API')
-  .setDescription('API')
+  .setTitle('Nethole API')
+  .setDescription('REST API Documentation of nethole.dev services')
   .setVersion('1.0')
-  .addTag('API')
+  .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'Authorization')
   .build();
 
 async function bootstrap() {
@@ -33,7 +33,19 @@ async function bootstrap() {
 
   app.useStaticAssets({ root: join(process.cwd(), 'uploads') });
 
-  SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, swaggerDocument));
+  const customSwaggerOptions: SwaggerCustomOptions = {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+    customSiteTitle: 'My API Docs',
+  };
+
+  SwaggerModule.setup(
+    'docs',
+    app,
+    SwaggerModule.createDocument(app, swaggerDocument),
+    customSwaggerOptions,
+  );
 
   const permissionsPrivateService = app.get(PermissionsPrivateService);
 
@@ -54,4 +66,7 @@ async function bootstrap() {
 
 bootstrap()
   .then(() => console.log('Nethole Api 🚀'))
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });

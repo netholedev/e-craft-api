@@ -1,7 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { PermissionsPrivateService, RolesPrivateService, RolesPublicService } from '@lib/services';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('roles')
+@ApiTags('Roles & Authorization')
 export class RolesController {
   constructor(
     private readonly rolesPublicService: RolesPublicService,

@@ -10,8 +10,14 @@ export class UserEntity extends BaseUuidEntity {
   @Column({ nullable: false, unique: true })
   email: string;
 
-  @Column({ select: false })
+  @Column({ select: false, nullable: false })
   password: string;
+
+  @Column({ select: false, nullable: true })
+  code?: string;
+
+  @Column({ select: false, nullable: true })
+  expire?: Date;
 
   @Column({ select: false, name: 'is_super_admin', type: 'bool', default: false })
   isSuperAdmin: boolean;

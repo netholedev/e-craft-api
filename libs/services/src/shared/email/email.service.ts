@@ -1,21 +1,21 @@
-import { ICurrentUser } from '@lib/base/interfaces';
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
+
+import { ICurrentUser } from '@lib/base/interfaces';
 
 @Injectable()
 export class EmailService {
-  constructor(private mailerService: MailerService) {}
+  constructor(private mailerService: MailerService, private readonly i18n: I18nService) {}
 
-  async sendUserConfirmation(user: ICurrentUser, token: string) {
-    const url = `example.com/auth/confirm?token=${token}`;
-
+  async sendForgotPasswordCode(to: string, code: string) {
     await this.mailerService.sendMail({
-      to: user.email,
-      subject: 'Welcome to Nice App! Confirm your Email',
-      template: './confirmation',
+      to,
+      subject: 'Password Confirmation',
+      template: './forgot-password.tpl.hbs',
       context: {
-        name: user.email,
-        url,
+        code,
+        codeMsg: await this.i18n.translate('CODE'),
       },
     });
   }

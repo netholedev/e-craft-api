@@ -4,9 +4,11 @@ import { Auth, CurrentUser } from '@lib/base/decorators';
 import { UuidPipe } from '@lib/base/pipes';
 import { CompanyEntity } from '@lib/entities';
 import { CompaniesPublicService } from '@lib/services';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('companies')
 @Auth()
+@Controller('companies')
+@ApiTags('Company Management')
 export class CompaniesController {
   constructor(private readonly companiesPublicService: CompaniesPublicService) {}
 

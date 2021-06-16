@@ -28,21 +28,16 @@
   },
   "email": {
     "transport": {
-      "host": "",
-      "secure": false,
+      "host": "smtp.yandex.com.tr",
+      "port": 465,
+      "secure": true,
       "auth": {
-        "user": "",
-        "pass": ""
+        "user": "balonmail@c4t6.com",
+        "pass": "espesp13"
       }
     },
     "defaults": {
-      "from": "\"No Reply\" <noreply@example.com>"
-    },
-    "template": {
-      "dir": "./templates",
-      "options": {
-        "strict": true
-      }
+      "from": "\"No Reply | nethole.dev\" <balonmail@c4t6.com>"
     }
   },
   "upload": {

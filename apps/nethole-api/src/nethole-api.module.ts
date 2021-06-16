@@ -4,6 +4,7 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { I18nJsonParser, I18nModule } from 'nestjs-i18n';
 
 import { ValidationPipe } from '@lib/base/pipes';
 import { HttpExceptionFilter } from '@lib/base/filters';
@@ -11,7 +12,7 @@ import { TransformInterceptor } from '@lib/base/interceptors';
 
 import { AccountsModule } from './accounts';
 import { CatalogsModule } from './catalogs';
-import { UploadModule } from './shared';
+import { UploadsModule } from './uploads';
 
 @Module({
   imports: [
@@ -39,9 +40,20 @@ import { UploadModule } from './shared';
         };
       },
     }),
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      fallbacks: {
+        'en-*': 'en',
+        'tr-*': 'tr',
+      },
+      parser: I18nJsonParser,
+      parserOptions: {
+        path: './locales',
+      },
+    }),
     AccountsModule,
     CatalogsModule,
-    UploadModule,
+    UploadsModule,
   ],
   providers: [
     {

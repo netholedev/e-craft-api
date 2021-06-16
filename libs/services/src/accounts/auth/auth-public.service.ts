@@ -5,6 +5,7 @@ import { CompanyEntity } from '@lib/entities';
 
 import { UsersPublicService } from '../users';
 import { CompaniesPrivateService, CompaniesPublicService } from '../companies';
+import { EmailService } from '../../shared';
 
 @Injectable()
 export class AuthPublicService {
@@ -12,9 +13,21 @@ export class AuthPublicService {
     private readonly usersPublicService: UsersPublicService,
     private readonly companiesPrivateService: CompaniesPrivateService,
     private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
   ) {}
 
-  async login(data: any) {
+  async generatePasswordRecoveryCode(data: { email: string }) {
+    const code = await this.usersPublicService.generatePasswordRecoveryCode(data.email);
+    await this.emailService.sendForgotPasswordCode(data.email, code);
+    return data.email;
+  }
+
+  async renewPassword(data: { email: string; code: string; password: string }) {
+    const password = await this.usersPublicService.renewPassword(data);
+    return this.login({ email: data.email, password: password });
+  }
+
+  async login(data: { email: string; password: string }) {
     const foundUser = await this.usersPublicService.findUserForLogin({
       email: data.email,
     });

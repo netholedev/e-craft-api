@@ -12,9 +12,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: async (configService: ConfigService) => {
         const emailConfigs = configService.get('email');
 
-        emailConfigs.adapter = new HandlebarsAdapter();
-
-        return emailConfigs;
+        return {
+          ...emailConfigs,
+          template: {
+            dir: 'templates/',
+            adapter: new HandlebarsAdapter(),
+            options: {
+              strict: true,
+            },
+          },
+        };
       },
     }),
   ],

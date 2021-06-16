@@ -23,12 +23,15 @@ import {
   UsersPrivateService,
   AuthPublicService,
 } from '@lib/services';
+
 import {
   AuthController,
   CompaniesController,
   RolesController,
   UsersController,
 } from './controllers';
+
+import { EmailModule } from '../shared';
 
 @Module({
   imports: [
@@ -44,6 +47,7 @@ import {
     PassportModule,
     LoggerModule,
     TypeOrmModule.forFeature([PermissionEntity, RoleEntity, CompanyEntity, UserEntity]),
+    EmailModule,
   ],
   providers: [
     LocalStrategy,

@@ -6,9 +6,11 @@ import { QueryFilter } from '@lib/base/dtos';
 import { Auth, CurrentUser, Filter, Pagination } from '@lib/base/decorators';
 import { ICurrentUser } from '@lib/base/interfaces';
 import { UuidPipe } from '@lib/base/pipes';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('users')
 @Auth()
+@Controller('users')
+@ApiTags('User Management')
 export class UsersController {
   constructor(private readonly usersPublicService: UsersPublicService) {}
 

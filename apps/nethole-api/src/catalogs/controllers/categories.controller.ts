@@ -6,9 +6,11 @@ import { CategoriesPublicService } from '@lib/services';
 import { QueryFilter } from '@lib/base/dtos';
 import { Auth, CurrentUser } from '@lib/base/decorators';
 import { ICurrentUser } from '@lib/base/interfaces';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('categories')
 @Auth()
+@Controller('categories')
+@ApiTags('Category Management')
 export class CategoriesController {
   constructor(private readonly categoriesPublicService: CategoriesPublicService) {}
 

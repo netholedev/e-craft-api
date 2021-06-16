@@ -6,7 +6,8 @@
   "compilerOptions": {
     "tsConfigPath": "apps/nethole-api/tsconfig.app.json",
     "assets": [
-      "templates/**/*"
+      "templates/**/*",
+      "locales/**/*"
     ],
     "watchAssets": true
   },

@@ -25,7 +25,7 @@ import { Auth } from '@lib/base/decorators';
 import { UploadService } from '@lib/services';
 import { IFile } from '@lib/base/interfaces';
 
-// @Auth()
+@Auth()
 @Controller('uploads')
 @ApiTags('Upload File')
 export class UploadController {

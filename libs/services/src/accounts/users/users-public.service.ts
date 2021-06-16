@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
+import { randomBytes } from 'crypto';
+import * as moment from 'moment';
 
 import { PublicBaseService } from '@lib/base/abstract/typeorm';
 import { ICurrentUser } from '@lib/base/interfaces';
@@ -49,6 +51,33 @@ export class UsersPublicService extends PublicBaseService<UserEntity> {
       delete newUser.password;
       return newUser;
     };
+  }
+
+  async renewPassword(data: { email: string; code: string; password: string }) {
+    const isValid = await this._repository.findOne(null, {
+      where: { email: data.email, code: data.code },
+      select: ['password'],
+    });
+
+    if (isValid && moment().diff(moment(isValid.expire), 'seconds') < 0) {
+      const password = hashSync(data.password, 12);
+
+      await this._repository.updateOne({ email: data.email, code: data.code }, { password });
+      return data.password;
+    } else {
+      throw 'TIMEOUT';
+    }
+  }
+
+  async generatePasswordRecoveryCode(email: string) {
+    const code = randomBytes(32).toString('hex');
+
+    await this._repository.updateOne(
+      { email, isActive: true },
+      { code, expire: moment().add('1h').toDate() },
+    );
+
+    return code;
   }
 
   async findUserForLogin(data: { email: string }) {
