@@ -1,6 +1,7 @@
 import { contentParser } from 'fastify-multer';
 import helmet from 'fastify-helmet';
 import { NestFactory } from '@nestjs/core';
+import fastifyCookie from 'fastify-cookie';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger';
 
@@ -29,6 +30,10 @@ async function bootstrap() {
 
   app.enableCors({
     origin: '*',
+  });
+
+  app.register(fastifyCookie, {
+    secret: 'A4frfdVaAddmmaaLASppos340',
   });
 
   app.useStaticAssets({ root: join(process.cwd(), 'uploads') });

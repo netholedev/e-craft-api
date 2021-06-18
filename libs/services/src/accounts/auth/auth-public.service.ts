@@ -44,6 +44,10 @@ export class AuthPublicService {
     throw new ForbiddenException('Invalid User Credentials');
   }
 
+  async validateAndRenewRefreshToken(refreshToken: string) {
+    return this.usersPublicService.validateAndRenewRefreshToken(refreshToken);
+  }
+
   async validateUser(id: string): Promise<any> {
     const foundUser = await this.usersPublicService.validateUserForLogin(id);
 

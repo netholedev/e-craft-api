@@ -36,7 +36,7 @@ import { UploadsModule } from './uploads';
           password: configService.get('postgres.password'),
           database: configService.get('postgres.database'),
           entities: configService.get('postgres.entities'),
-          synchronize: configService.get('postgres.synchronize'),
+          synchronize: process.env.NODE_ENV !== 'production' || true,
         };
       },
     }),

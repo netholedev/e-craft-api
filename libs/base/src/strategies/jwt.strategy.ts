@@ -7,19 +7,31 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authPublicService: AuthPublicService, private readonly configService: ConfigService) {
+  constructor(
+    private readonly authPublicService: AuthPublicService,
+    private readonly configService: ConfigService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: configService.get('jwt.secret'),
+      passReqToCallback: true,
     });
   }
 
-  async validate(payload: any) {
+  async validate(req, payload: any) {
     const user = await this.authPublicService.validateUser(payload.id);
     if (!user) {
       throw new UnauthorizedException();
     }
+    console.log(req);
+    /*
+    if (!req.cookies.refreshToken) {
+      console.log(req.cookies.refreshToken);
+      throw new UnauthorizedException();
+    }
+    */
+
     return user;
   }
 }

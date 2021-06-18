@@ -11,6 +11,7 @@ import { UserEntity, CompanyEntity } from '@lib/entities';
 import { UsersRepository } from './users.repository';
 
 import { RolesPublicService } from '../roles';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class UsersPublicService extends PublicBaseService<UserEntity> {
@@ -94,5 +95,20 @@ export class UsersPublicService extends PublicBaseService<UserEntity> {
       loadEagerRelations: true,
       relations: ['role', 'company'],
     });
+  }
+
+  async validateAndRenewRefreshToken(refreshToken: string) {
+    const isValid = await this._repository.findOne(null, {
+      where: { refreshToken, isActive: true },
+      select: ['id'],
+    });
+
+    if (isValid) {
+      const newToken = v4();
+      await this._repository.updateOne({ id: isValid.id }, { refreshToken: newToken });
+      return newToken;
+    }
+
+    throw 'Invalid refresh token';
   }
 }

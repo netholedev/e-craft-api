@@ -12,9 +12,8 @@
     "password": "postgres",
     "database": "postgres",
     "entities": [
-      "dist/apps/nethole-api/libs/entities/src/**/*.entity{.ts,.js}"
-    ],
-    "synchronize": true
+      "dist/libs/entities/src/**/*.entity{.ts,.js}"
+    ]
   },
   "mongodb": {
     "host": "c4t6.com",
@@ -46,8 +45,8 @@
       "image": 1500000
     },
     "paths": {
-      "excel": "./upload/xls",
-      "image": "./upload/image"
+      "excel": "./uploads/xls",
+      "image": "./uploads/image"
     }
   }
 }

@@ -7,7 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev:api": "nest start -w nethole-api",
-    "build:api": "nest build nethole-api"
+    "build:api": "nest build nethole-api",
+    "debug:api": "nest start -w nethole-api --debug 0.0.0.0:9229 --watch"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.6.0",
@@ -33,6 +34,7 @@
     "change-case": "^4.1.2",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "fastify-cookie": "^5.3.1",
     "fastify-helmet": "^5.3.1",
     "fastify-multer": "^2.0.2",
     "fastify-swagger": "^4.7.0",
