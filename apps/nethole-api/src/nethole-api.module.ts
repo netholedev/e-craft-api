@@ -13,6 +13,14 @@ import { TransformInterceptor } from '@lib/base/interceptors';
 import { AccountsModule } from './accounts';
 import { CatalogsModule } from './catalogs';
 import { UploadsModule } from './uploads';
+import {
+  CategoryEntity,
+  CompanyEntity,
+  PermissionEntity,
+  ProductEntity,
+  RoleEntity,
+  UserEntity,
+} from '@lib/entities';
 
 @Module({
   imports: [
@@ -35,8 +43,15 @@ import { UploadsModule } from './uploads';
           username: configService.get('postgres.username'),
           password: configService.get('postgres.password'),
           database: configService.get('postgres.database'),
-          entities: configService.get('postgres.entities'),
-          synchronize: process.env.NODE_ENV !== 'production' || true,
+          entities: [
+            CompanyEntity,
+            PermissionEntity,
+            RoleEntity,
+            UserEntity,
+            CategoryEntity,
+            ProductEntity,
+          ],
+          synchronize: process.env.NODE_ENV !== 'production' || true,
         };
       },
     }),
