@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { AuthPublicService } from '@lib/services';
@@ -16,9 +16,14 @@ export class AuthController {
     return this.authPublicService.login(body);
   }
 
-  @Put('forgot-password')
+  @Post('forgot-password')
   async forgotPassword(@Body() body: ForgotPasswordDto) {
     return this.authPublicService.generatePasswordRecoveryCode(body);
+  }
+
+  @Get('check-code')
+  async checkCode(@Query('code') code: string) {
+    return this.authPublicService.checkCode(code);
   }
 
   @Put('renew-password')

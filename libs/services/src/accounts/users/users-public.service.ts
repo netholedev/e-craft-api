@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { randomBytes } from 'crypto';
 import * as moment from 'moment';
@@ -54,17 +54,17 @@ export class UsersPublicService extends PublicBaseService<UserEntity> {
     };
   }
 
-  async renewPassword(data: { email: string; code: string; password: string }) {
+  async renewPassword(data: { code: string; password: string }) {
     const isValid = await this._repository.findOne(null, {
-      where: { email: data.email, code: data.code },
-      select: ['password'],
+      where: { code: data.code },
+      select: ['password', 'email', 'expire'],
     });
 
-    if (isValid && moment().diff(moment(isValid.expire), 'seconds') < 0) {
+    if (isValid && moment().diff(moment(isValid.expire), 'seconds') > 0) {
       const password = hashSync(data.password, 12);
 
-      await this._repository.updateOne({ email: data.email, code: data.code }, { password });
-      return data.password;
+      await this._repository.updateOne({ code: data.code }, { password, expire: null, code: null });
+      return { password: data.password, email: isValid.email };
     } else {
       throw 'TIMEOUT';
     }
@@ -73,12 +73,29 @@ export class UsersPublicService extends PublicBaseService<UserEntity> {
   async generatePasswordRecoveryCode(email: string) {
     const code = randomBytes(32).toString('hex');
 
-    await this._repository.updateOne(
+    const found = await this._repository.updateOne(
       { email, isActive: true },
       { code, expire: moment().add('1h').toDate() },
     );
 
+    if (found.affected < 1) {
+      throw new ForbiddenException('INVALID_CODE');
+    }
+
     return code;
+  }
+
+  async checkCode(code: string) {
+    const found = await this._repository.findOne(null, {
+      where: { code, isActive: true },
+      select: ['expire'],
+    });
+
+    if (found && found.expire && moment().diff(moment(found.expire), 'seconds') > 0) {
+      return;
+    } else {
+      throw new ForbiddenException('INVALID_CODE');
+    }
   }
 
   async findUserForLogin(data: { email: string }) {

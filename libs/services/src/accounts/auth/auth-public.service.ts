@@ -22,9 +22,13 @@ export class AuthPublicService {
     return data.email;
   }
 
-  async renewPassword(data: { email: string; code: string; password: string }) {
-    const password = await this.usersPublicService.renewPassword(data);
-    return this.login({ email: data.email, password: password });
+  async checkCode(code: string) {
+    return this.usersPublicService.checkCode(code);
+  }
+
+  async renewPassword(data: { code: string; password: string }) {
+    const credentials = await this.usersPublicService.renewPassword(data);
+    return this.login(credentials);
   }
 
   async login(data: { email: string; password: string }) {
@@ -41,7 +45,7 @@ export class AuthPublicService {
       };
     }
 
-    throw new ForbiddenException('Invalid User Credentials');
+    throw new ForbiddenException('INVALID_USER_CREDENTIALS');
   }
 
   async validateAndRenewRefreshToken(refreshToken: string) {
